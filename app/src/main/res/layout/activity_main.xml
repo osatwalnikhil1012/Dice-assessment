@@ -8,80 +8,90 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/heading"
-        android:text="GitHub Repository Search"
-        android:textSize="26sp"
-        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
         android:gravity="center"
-        android:layout_marginTop="30dp"/>
-    
+        android:text="GitHub Repository Search"
+        android:textColor="@color/black"
+        android:textSize="26sp" />
+
     <LinearLayout
         android:id="@+id/linear_layout"
-        android:layout_below="@+id/heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_below="@+id/heading"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/request_tag"
             android:layout_width="250dp"
             android:layout_height="45dp"
-            android:id="@+id/request_tag"
-            android:textColorHint="@color/gray"
-            android:textColor="@color/black"
-            android:hint="Type a query for Github"
-            android:padding="12dp"
-            android:inputType="text"
-            android:textSize="16sp"
             android:layout_margin="10dp"
             android:background="@drawable/edittext_bg"
-            android:importantForAutofill="no"/>
-        
+            android:hint="Type a query for Github"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="16sp" />
+
         <ImageButton
+            android:id="@+id/search_repo"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:id="@+id/search_repo"
-            android:padding="10dp"
+            android:background="@drawable/button_bg"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/baseline_search_24"
-            android:background="@drawable/button_bg"/>
+            android:padding="10dp"
+            android:src="@drawable/baseline_search_24" />
 
     </LinearLayout>
 
-    <Spinner
-        android:id="@+id/sort_spinner"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
+    <RelativeLayout
+        android:id="@+id/sort_spinner_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/linear_layout"
         android:layout_centerInParent="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp" />
+        android:background="@drawable/edittext_bg">
+
+        <Spinner
+            android:id="@+id/sort_spinner"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:spinnerMode="dropdown"/>
+    </RelativeLayout>
+
 
     <ListView
         android:id="@+id/data_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/sort_spinner"
+        android:layout_below="@+id/sort_spinner_layout"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp" />
 
     <TextView
+        android:id="@+id/error_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/error_message"
         android:gravity="center"
-        android:visibility="gone"/>
-    
+        android:visibility="gone" />
+
     <ProgressBar
+        android:id="@+id/loading"
         android:layout_width="42dp"
         android:layout_height="42dp"
-        android:id="@+id/loading"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>
