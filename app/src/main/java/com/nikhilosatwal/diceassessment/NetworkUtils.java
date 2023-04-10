@@ -1,5 +1,8 @@
 package com.nikhilosatwal.diceassessment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
@@ -53,6 +56,8 @@ public class NetworkUtils {
             urlConnection.disconnect();
         }
     }
+
+
 
     private static List<Repository> jsonFormatter(String jsonResponse) {
         List<Repository> resRepositoryList = new ArrayList<>();

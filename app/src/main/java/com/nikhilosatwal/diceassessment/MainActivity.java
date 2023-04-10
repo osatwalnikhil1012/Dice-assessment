@@ -8,6 +8,10 @@ import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +28,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repository>>, AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Repository>>, AdapterView.OnItemSelectedListener,  ConnectionReceiver.ReceiverListener {
 
     private ListView dataListView;
     private EditText requestTag;
@@ -64,7 +68,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         LoaderManager.getInstance(this).initLoader(GITHUB_SEARCH_LOADER, null, this);
         searchQuery.setOnClickListener(view -> {
-            makeGithubSearchQuery(0);
+            if (checkConnection()) {
+                makeGithubSearchQuery(0);
+            } else {
+                Toast.makeText(this, "Not Connected to Internet", Toast.LENGTH_SHORT).show();
+            }
         });
         spinner = (Spinner) findViewById(R.id.sort_spinner);
         spinner.setOnItemSelectedListener(this);
@@ -149,6 +157,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         errorMsg.setVisibility(View.VISIBLE);
     }
 
+    private boolean checkConnection() {
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.new.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(new ConnectionReceiver(), intentFilter);
+
+        ConnectionReceiver.Listener = this;
+        ConnectivityManager manager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
+
     private void makeGithubSearchQuery(int position) {
         String gitHubSearchQuery = requestTag.getText().toString();
         String gitSortBy = spinner.getAdapter().getItem(position).toString();
@@ -166,11 +187,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        makeGithubSearchQuery(i);
+        if (checkConnection()) {
+            makeGithubSearchQuery(i);
+        } else {
+            Toast.makeText(this, "Not Connected to Internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    @Override
+    public void onNetworkChange(boolean isConnected) {
 
     }
 }
